@@ -1,5 +1,8 @@
 {
   "name": "jake-mode-spike",
   "description": "Throwaway test of jake-mode as an Account plugin. Delete after the test.",
-  "skills": ["./skills/productivity/spike-hello"]
+  "skills": [
+    "./skills/productivity/spike-hello"
+  ],
+  "license": "MIT"
 }

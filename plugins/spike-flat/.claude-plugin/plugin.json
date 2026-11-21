@@ -1,1 +1,5 @@
-{"name": "spike-flat", "description": "Spike variant spike-flat. Delete after the test."}
+{
+  "name": "spike-flat",
+  "description": "Spike variant spike-flat. Delete after the test.",
+  "license": "MIT"
+}
