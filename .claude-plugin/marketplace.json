@@ -1,0 +1,11 @@
+{
+  "name": "jake-mode-spike",
+  "owner": { "name": "bravely" },
+  "plugins": [
+    {
+      "name": "jake-mode-spike",
+      "source": "./",
+      "description": "Throwaway test of jake-mode as an Account plugin."
+    }
+  ]
+}
