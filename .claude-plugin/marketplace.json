@@ -30,9 +30,19 @@
       "description": "Spike suspect t-fullrepo"
     },
     {
+      "name": "t-fullscripts",
+      "source": "./plugins/t-fullscripts",
+      "description": "Spike suspect t-fullscripts"
+    },
+    {
       "name": "t-realskills",
       "source": "./plugins/t-realskills",
       "description": "Spike suspect t-realskills"
+    },
+    {
+      "name": "t-symlink",
+      "source": "./plugins/t-symlink",
+      "description": "Spike suspect t-symlink"
     }
   ]
 }

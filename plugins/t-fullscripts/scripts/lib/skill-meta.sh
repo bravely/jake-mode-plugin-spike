@@ -1,0 +1,101 @@
+# shellcheck shell=bash
+# Read the custom fields a skill carries in its SKILL.md front matter.
+# Sourced, not run: bin/link and bin/account-plugin both need the
+# same answer to "what is this skill's reach?", so the parsing lives here
+# once.
+#
+# Custom fields live under the `metadata:` map, because claude.ai rejects
+# a skill whose front matter has any other top-level key it does not know
+# (it accepts only name, description, license, compatibility, metadata and
+# allowed-tools). The map must be block style, one `key: value` per
+# indented line:
+#
+#   metadata:
+#     reach: all
+#     experimental: true
+#
+# bin/account-plugin rejects the inline `metadata: {...}` form, so
+# the plain line-by-line reading below never has to understand it.
+#
+# The fields:
+#   reach         all  -> carried by the Account plugin (.claude-plugin/), reaching
+#                         chat, mobile and every Claude Code session through
+#                         my Claude accounts.
+#                 code -> wired by bin/link, Claude Code only. The default.
+#   experimental  true while the skill is still being tried out. Nothing
+#                 reads it; it is for the person reading the skill.
+
+# Print the front matter of the given SKILL.md: the lines between the
+# opening `---` on line 1 and the next `---`. Prints nothing when line 1 is
+# not `---`.
+skill_frontmatter() {
+  awk 'NR == 1 { if ($0 !~ /^---[[:space:]]*$/) exit; next }
+       /^---[[:space:]]*$/ { exit }
+       { print }' "$1"
+}
+
+# Print why the given SKILL.md's front matter is not valid YAML, as
+# "line N column M: <problem>" with N counted in the file, or nothing when
+# it parses. The line-by-line reading in this file tolerates what a real
+# YAML parser rejects, such as an unquoted description containing ": ",
+# and claude.ai does parse it, so this is the check that catches those.
+# Needs ruby, which macOS and the GitHub Ubuntu runners both ship.
+skill_frontmatter_yaml_error() {
+  if ! command -v ruby >/dev/null; then
+    echo "ruby is not installed, so it could not be checked"
+    return
+  fi
+  skill_frontmatter "$1" | ruby -ryaml -e '
+    begin
+      YAML.parse($stdin.read)
+    rescue Psych::SyntaxError => e
+      # +1 for the opening fence, which skill_frontmatter leaves out.
+      puts "line #{e.line + 1} column #{e.column}: #{e.problem}"
+    end'
+}
+
+# Print the value of one key under the front matter's `metadata:` map, for
+# the skill directory given first and the key given second. Quotes and a
+# trailing comment are stripped. Prints nothing when the key is absent.
+# Only keys at the map's own indent count, so a `reach:` inside a map
+# nested under `metadata` is not mistaken for the skill's reach.
+skill_metadata() { skill_file_metadata "$1/SKILL.md" "$2"; }
+
+# The same, given the SKILL.md file itself rather than its directory, so a
+# copy taken from another commit can be read too.
+skill_file_metadata() {
+  skill_frontmatter "$1" | awk -v key="$2" '
+    /^metadata:[[:space:]]*$/ { inmeta = 1; indent = ""; next }
+    /^[^[:space:]#]/          { inmeta = 0; next }
+    !inmeta || /^[[:space:]]*(#|$)/ { next }
+    {
+      match($0, /^[[:space:]]+/)
+      if (indent == "") indent = substr($0, 1, RLENGTH)
+    }
+    substr($0, 1, RLENGTH) == indent && substr($0, RLENGTH + 1, length(key) + 1) == key ":" {
+      v = substr($0, RLENGTH + length(key) + 2)
+      sub(/^[[:space:]]*/, "", v)
+      sub(/[[:space:]]+#.*$/, "", v)
+      sub(/[[:space:]]+$/, "", v)
+      gsub(/^["\047]|["\047]$/, "", v)
+      print v
+      exit
+    }'
+}
+
+# Print the reach of the given skill directory: its `metadata.reach`, or
+# `code` when it has none. An unknown value is printed as-is so that the
+# check in bin/account-plugin can name it; everything else treats
+# any value but `all` as code.
+skill_reach() { skill_file_reach "$1/SKILL.md"; }
+
+# The same, given the SKILL.md file itself.
+skill_file_reach() {
+  local reach; reach="$(skill_file_metadata "$1" reach)"
+  printf '%s\n' "${reach:-code}"
+}
+
+# The top-level keys claude.ai accepts in a skill's front matter. Anything
+# else is rejected. Read by bin/account-plugin.
+# shellcheck disable=SC2034
+ACCOUNT_FRONTMATTER_KEYS="name description license compatibility metadata allowed-tools"

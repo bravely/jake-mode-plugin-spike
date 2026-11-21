@@ -1,0 +1,5 @@
+{
+  "name": "t-fullscripts",
+  "description": "Spike suspect t-fullscripts.",
+  "license": "MIT", "skills": ["./skills/productivity/v-availability", "./skills/productivity/v-call-notes-synthesis", "./skills/productivity/v-gtd-weekly-review", "./skills/productivity/v-todoist-inbox-management", "./skills/productivity/v-weekly-retro"]
+}
