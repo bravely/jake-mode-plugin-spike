@@ -1,0 +1,5 @@
+{
+  "name": "t-fullrepo",
+  "description": "Spike suspect t-fullrepo.",
+  "license": "MIT", "skills": ["./skills/productivity/u-availability", "./skills/productivity/u-call-notes-synthesis", "./skills/productivity/u-gtd-weekly-review", "./skills/productivity/u-todoist-inbox-management", "./skills/productivity/u-weekly-retro"]
+}

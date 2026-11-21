@@ -1,9 +1,38 @@
 {
   "name": "jake-mode-spike",
-  "owner": { "name": "bravely" },
+  "owner": {
+    "name": "bravely"
+  },
   "plugins": [
-    { "name": "jake-mode-spike", "source": "./", "description": "Variant A: repo root as plugin, nested skill listed in plugin.json." },
-    { "name": "spike-flat", "source": "./plugins/spike-flat", "description": "Variant B: subfolder plugin, standard skills/<name>/ layout." },
-    { "name": "spike-nested", "source": "./plugins/spike-nested", "description": "Variant C: subfolder plugin, nested skill listed in plugin.json." }
+    {
+      "name": "t-bin",
+      "source": "./plugins/t-bin",
+      "description": "Spike suspect t-bin"
+    },
+    {
+      "name": "t-clash",
+      "source": "./plugins/t-clash",
+      "description": "Spike suspect t-clash"
+    },
+    {
+      "name": "t-claudemd",
+      "source": "./plugins/t-claudemd",
+      "description": "Spike suspect t-claudemd"
+    },
+    {
+      "name": "t-control",
+      "source": "./plugins/t-control",
+      "description": "Spike suspect t-control"
+    },
+    {
+      "name": "t-fullrepo",
+      "source": "./plugins/t-fullrepo",
+      "description": "Spike suspect t-fullrepo"
+    },
+    {
+      "name": "t-realskills",
+      "source": "./plugins/t-realskills",
+      "description": "Spike suspect t-realskills"
+    }
   ]
 }

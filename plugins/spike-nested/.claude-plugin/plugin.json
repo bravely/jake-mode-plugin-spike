@@ -1,8 +1,0 @@
-{
-  "name": "spike-nested",
-  "description": "Spike variant spike-nested. Delete after the test.",
-  "skills": [
-    "./skills/productivity/spike-nested"
-  ],
-  "license": "MIT"
-}
