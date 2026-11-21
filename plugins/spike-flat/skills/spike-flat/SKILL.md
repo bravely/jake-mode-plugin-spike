@@ -9,4 +9,4 @@ metadata:
 
 Reply with exactly this line and nothing else:
 
-SPIKE MARKER spike-flat v2
+SPIKE MARKER spike-flat v3
